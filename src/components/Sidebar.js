@@ -10,11 +10,15 @@ import {
     Storefront,
     VideoLibrary
 } from "@material-ui/icons";
+import {useStateValue} from "../StateProvider";
 
 const Sidebar = () => {
+
+    const [{user}, dispatch] = useStateValue();
+
     return (
         <div className='sidebar'>
-            <SidebarRow src={'a'} title={'Daniel Arango'}/>
+            <SidebarRow src={user?.photoURL} title={user?.displayName}/>
             <SidebarRow title={'COVID-19 Information Center'} Icon={LocalHospital}/>
             <SidebarRow title={'Pages'} Icon={EmojiFlags}/>
             <SidebarRow title={'Friends'} Icon={People}/>

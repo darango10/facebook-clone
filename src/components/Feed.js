@@ -1,21 +1,39 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import '../css/feed.css'
 import StoryReel from "./StoryReel";
 import MessageSender from "./MessageSender";
 import Post from "./Post";
+import db from "../firebase";
 
 const Feed = () => {
+
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        db.collection('posts').onSnapshot(snapshot => {
+            setPosts(snapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data()
+            })))
+        })
+    }, []);
+
+
     return (
         <div className='feed'>
             <StoryReel/>
             <MessageSender/>
-            <Post
-                profileImage={'https://images.unsplash.com/photo-1598550880863-4e8aa3d0edb4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=564&q=80'}
-                message={'Hello from facebook clone'}
-                timestamp={'This is a timestamp'}
-                username={'Manuela'}
-                image={'https://images.unsplash.com/photo-1534258936925-c58bed479fcb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80'}
-            />
+            {posts.map(post => (
+                <Post
+                    key={post.id}
+                    profileImage={post.data.profileImage}
+                    message={post.data.message}
+                    timestamp={post.data.timestamp}
+                    username={post.data.username}
+                    image={post.data.image}
+                />
+            ))}
+
         </div>
     );
 };

@@ -9,11 +9,11 @@ import {useStateValue} from "./StateProvider";
 
 function App() {
 
-    const [{isLoggedIn}, dispatch] = useStateValue();
+    const [{user}, dispatch] = useStateValue();
 
     return (
         <div className="app">
-            {isLoggedIn
+            {user
                 ?
                 <>
                     <Header/>
